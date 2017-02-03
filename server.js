@@ -32,11 +32,13 @@ io.on('connection', function(socket) {
           })
           .on('end', function() {
             connection.destroy(); // disconnect
-            var hotel_flag = "OFF";
+            var hotel_flag = "OFF",
+		LAT_CORR = 0.005399568,
+		LNG_CORR = 0.000089993;            
             for(var i = 0; i < hotel_list.length; i++) {
             hotel_lat = hotel_list[i]["lat"];
             hotel_lng = hotel_list[i]["lng"];
-            if (lat == hotel_lat && lng == hotel_lng) {
+            if ((hotel_lat - LAT_CORR <= lat && lat <= hotel_lat + LAT_CORR) && (hotel_lng - LNG_CORR <= lng && lng <= hotel_lng + LNG_CORR)) {
               hotel_flag = "ON";
               break;
             }
